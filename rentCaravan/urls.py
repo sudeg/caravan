@@ -15,16 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url, include
 
-from application.views import answers_list, orders_list, products_list, profiles_list, questions_list
+from application.views import answers_list, orders_list, products_list, profiles_list, questions_list, index, special, user_logout, register, user_login
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('answers', answers_list),
     path('orders', orders_list),
-    path('', products_list),
+    path('products', products_list),
     path('profiles', profiles_list),
     path('questions', questions_list),
+    url(r'^$', index, name='index'),
+    url(r'^special/', special, name='special'),
+    url(r'^application/', include('application.urls')),
+    url(r'^logout/$', user_logout, name='logout'),
 
 ]

@@ -1,8 +1,9 @@
 from django import forms
 
-from .models import Answer, Order, Product, Profile, Question, UserProfileInfo
+from .models import Answer, Order, Product, Profile, Question
 
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 
 class AnswerForm(forms.ModelForm):
@@ -43,14 +44,8 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            'email',
-            'name',
-            'lastName',
-            'password',
-            'productAmount',
-            'rentedProductAmount'
-
-
+            'portfolio_site',
+            'profile_pic',
         ]
 
 
@@ -71,8 +66,3 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'password', 'email')
 
-
-class UserProfileInfoForm(forms.ModelForm):
-    class Meta():
-        model = UserProfileInfo
-        fields = ('portfolio_site', 'profile_pic')

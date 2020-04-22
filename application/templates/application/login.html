@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'application/base.html' %}
 {% block body_block %}
 <div class="container">
     <div class="jumbotron">
@@ -11,6 +11,8 @@
             <label for="password">Password:</label>
             <input type="password" name="password" placeholder="Password">
             <input type="submit" name="" value="Login">
+            <p><strong>-- OR --</strong></p>
+            <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
         </form>
     </div>
 </div>

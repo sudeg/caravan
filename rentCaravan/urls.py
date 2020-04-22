@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 
-from application.views import answers_list, orders_list, products_list, profiles_list, questions_list, index, special, user_logout, register, user_login
+from application.views import answers_list, orders_list, products_list, profiles_list, questions_list, index, special, user_logout, register, user_login, profile_page
 
 
 urlpatterns = [
@@ -31,5 +31,7 @@ urlpatterns = [
     url(r'^special/', special, name='special'),
     url(r'^application/', include('application.urls')),
     url(r'^logout/$', user_logout, name='logout'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url('profile', profile_page),
 
 ]

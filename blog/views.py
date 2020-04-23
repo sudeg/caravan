@@ -7,12 +7,12 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post
+from .models import Post, Product
 
 
 def home(request):
     context = {
-        'posts': Post.objects.all()
+        'products': Product.objects.all()
     }
     return render(request, 'blog/home.html', context)
 
@@ -65,3 +65,50 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'products'
+    ordering = ['-date_posted']
+
+
+class ProductDetailView(DetailView):
+    model = Product
+
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    fields = ['title', 'content', 'location', 'capacity', 'rentPricePerDay']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+    model = Product
+    fields = ['title', 'content', 'location', 'capacity', 'rentPricePerDay']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        product = self.get_object()
+        if self.request.user == product.author:
+            return True
+        return False
+
+
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Product
+    success_url = '/'
+
+    def test_func(self):
+        product = self.get_object()
+        if self.request.user == product.author:
+            return True
+        return False

@@ -15,3 +15,20 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
+
+
+class Product(models.Model):
+    title = models.CharField(max_length=100)  # karavan adı
+    content = models.TextField()  # brief explanation
+    date_posted = models.DateTimeField(
+        default=timezone.now)  # sisteme eklenme tarihi
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  # ekleyen kişi
+    location = models.TextField()  # lokasyon
+    capacity = models.IntegerField()  # karavan kapasitesi
+    rentPricePerDay = models.IntegerField()  # günlük kiralama bedeli
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('product-detail', kwargs={'pk': self.pk})

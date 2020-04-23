@@ -14,24 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url, include
-
-from application.views import answers_list, orders_list, products_list, profiles_list, questions_list, index, special, user_logout, register, user_login, profile_page
-
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('answers', answers_list),
-    path('orders', orders_list),
-    path('products', products_list),
-    path('profiles', profiles_list),
-    path('questions', questions_list),
-    url(r'^$', index, name='index'),
-    url(r'^special/', special, name='special'),
-    url(r'^application/', include('application.urls')),
-    url(r'^logout/$', user_logout, name='logout'),
-    url(r'^oauth/', include('social_django.urls', namespace='social')),
-    url('profile', profile_page),
-
+    path('register/', user_views.register, name='register'),
+    path('profile/', user_views.profile, name='profile'),
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('', include('blog.urls')),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

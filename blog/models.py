@@ -9,6 +9,9 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.TextField(null=True)  # lokasyon
+    capacity = models.IntegerField(null=True)  # karavan kapasitesi
+    rentPricePerDay = models.IntegerField(null=True)  # günlük kiralama bedeli
 
     def __str__(self):
         return self.title

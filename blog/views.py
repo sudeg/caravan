@@ -30,7 +30,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'location', 'capacity', 'rentPricePerDay']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -39,7 +39,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'location', 'capacity', 'rentPricePerDay']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -67,9 +67,16 @@ def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
 
 
+def products(request):
+    context = {
+        'products': Product.objects.all()
+    }
+    return render(request, 'blog/home.html', context, {'title': 'Product'})
+
+
 class ProductListView(ListView):
     model = Product
-    template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blog/products.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'products'
     ordering = ['-date_posted']
 
